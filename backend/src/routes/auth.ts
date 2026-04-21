@@ -8,6 +8,7 @@ const router = Router();
 router.post('/login', AuthController.login);
 router.post('/register', AuthController.register);
 router.post('/verify-token', AuthController.verifyToken);
+router.post('/logout', AuthController.logout);
 
 // Protected routes
 router.get('/profile', authenticateToken, AuthController.getProfile);

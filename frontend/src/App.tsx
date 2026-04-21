@@ -8,6 +8,13 @@ import Students from './pages/Students'
 import Teachers from './pages/Teachers'
 import Departments from './pages/Departments'
 import Attendance from './pages/Attendance'
+import Timetable from './pages/Timetable'
+import Subjects from './pages/Subjects'
+import Classes from './pages/Classes'
+import Calendar from './pages/Calendar'
+import MarksAndResults from './pages/MarksAndResults'
+import AttendancePercentage from './pages/AttendancePercentage'
+import Settings from './pages/Settings'
 import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
@@ -23,6 +30,17 @@ function App() {
             <Route path="teachers" element={<Teachers />} />
             <Route path="departments" element={<Departments />} />
             <Route path="attendance" element={<Attendance />} />
+            <Route path="timetable" element={<Timetable />} />
+            <Route path="subjects" element={<Subjects />} />
+            <Route path="classes" element={<Classes />} />
+            <Route path="calendar" element={<Calendar />} />
+            <Route path="marks-and-results" element={<MarksAndResults />} />
+            <Route path="attendance-percentage" element={<AttendancePercentage />} />
+            <Route path="settings" element={
+              <ProtectedRoute requiredPermission="view_settings">
+                <Settings />
+              </ProtectedRoute>
+            } />
           </Route>
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>

@@ -1,14 +1,29 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Card, CardHeader, CardBody, Button, Badge } from '../components/ui'
-import { StudentsService, StudentStatistics } from '../services'
 import { useAuth } from '../context/AuthContext'
+import ReportGenerator from '../components/ReportGenerator'
 
 interface DashboardStats {
   totalStudents: number
   totalTeachers: number
   totalDepartments: number
   attendanceRate: number
+}
+
+interface StudentStatistics {
+  total: number
+  active: number
+  inactive: number
+  byGrade: {
+    'Grade 10': number
+    'Grade 11': number
+    'Grade 12': number
+  }
+  byGender?: {
+    male: number
+    female: number
+  }
 }
 
 interface ActivityItem {
@@ -32,31 +47,50 @@ const Dashboard = () => {
   const [studentStats, setStudentStats] = useState<StudentStatistics | null>(null)
   const [activities, setActivities] = useState<ActivityItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false)
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         setIsLoading(true)
         
-        // Fetch student statistics
-        const studentStatsResponse = await StudentsService.getStatistics()
-        if (studentStatsResponse.data) {
-          setStudentStats(studentStatsResponse.data)
-          setStats(prev => ({
-            ...prev,
-            totalStudents: studentStatsResponse.data.total,
-            attendanceRate: studentStatsResponse.data.total > 0 
-              ? Math.round((studentStatsResponse.data.active / studentStatsResponse.data.total) * 100)
-              : 0
-          }))
-        }
+        // Use mock data for now since database is not configured
+        // This would normally fetch from API:
+        // const studentStatsResponse = await StudentsService.getStatistics()
+        // if (studentStatsResponse.data) {
+        //   setStudentStats(studentStatsResponse.data)
+        //   setStats(prev => ({
+        //     ...prev,
+        //     totalStudents: studentStatsResponse.data.total,
+        //     attendanceRate: studentStatsResponse.data.total > 0 
+        //       ? Math.round((studentStatsResponse.data.active / studentStatsResponse.data.total) * 100)
+        //       : 0
+        //   }))
+        // }
 
-        // Mock data for teachers and departments (would be replaced with actual API calls)
-        setStats(prev => ({
-          ...prev,
+        // Mock data for dashboard
+        setStats({
+          totalStudents: 245,
           totalTeachers: 56,
-          totalDepartments: 8
-        }))
+          totalDepartments: 8,
+          attendanceRate: 87
+        })
+
+        // Mock student statistics
+        setStudentStats({
+          total: 245,
+          active: 213,
+          inactive: 32,
+          byGrade: {
+            'Grade 10': 85,
+            'Grade 11': 78,
+            'Grade 12': 82
+          },
+          byGender: {
+            male: 125,
+            female: 120
+          }
+        })
 
         // Mock recent activities (would be replaced with actual API calls)
         setActivities([
@@ -238,8 +272,13 @@ const Dashboard = () => {
             <div className="grid grid-cols-2 gap-4">
               <Button variant="primary" onClick={() => navigate('/students')}>Add Student</Button>
               <Button variant="secondary" onClick={() => navigate('/attendance')}>Mark Attendance</Button>
-              <Button variant="secondary" onClick={() => alert('Report generation coming soon!')}>Generate Report</Button>
-              <Button variant="secondary" onClick={() => alert('Calendar view coming soon!')}>View Calendar</Button>
+              <Button variant="secondary" onClick={() => setIsReportModalOpen(true)}>Generate Report</Button>
+              <Button variant="secondary" onClick={() => {
+                // TODO: Implement calendar view functionality
+                console.log('Calendar view feature coming soon!');
+                // For now, show a simple alert
+                alert('Calendar view feature is coming soon! This will display academic calendar, events, and important dates.');
+              }}>View Calendar</Button>
             </div>
           </CardBody>
         </Card>
@@ -268,6 +307,11 @@ const Dashboard = () => {
           </Card>
         </div>
       )}
+      {/* Report Generation Modal */}
+      <ReportGenerator
+        isOpen={isReportModalOpen}
+        onClose={() => setIsReportModalOpen(false)}
+      />
     </div>
   )
 }

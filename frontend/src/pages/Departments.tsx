@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Card, CardHeader, CardBody, Button, Badge, Table, TableHeader, TableBody, TableRow, TableCell, TableHead, Input } from '../components/ui'
+import { PermissionGuard } from '../components/PermissionGuard'
+import { PERMISSIONS } from '../types/permissions'
+import { useAuth } from '../context/AuthContext'
 
 interface Department {
   id: string
@@ -25,6 +28,7 @@ interface CreateDepartmentData {
 }
 
 const Departments = () => {
+  const { user } = useAuth()
   const [departments, setDepartments] = useState<Department[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -39,6 +43,8 @@ const Departments = () => {
     hodEmail: '',
     isActive: true
   })
+
+  const canEdit = user?.role === 'teacher' || user?.role === 'admin' || user?.role === 'principal'
 
   useEffect(() => {
     fetchDepartments()
@@ -208,7 +214,9 @@ const Departments = () => {
         <CardHeader>
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-medium text-gray-900">All Departments</h3>
-            <Button variant="primary" onClick={() => setShowAddModal(true)}>Add Department</Button>
+            <PermissionGuard permission={PERMISSIONS.ADD_DEPARTMENT}>
+              <Button variant="primary" onClick={() => setShowAddModal(true)}>Add Department</Button>
+            </PermissionGuard>
           </div>
         </CardHeader>
         <CardBody>
@@ -273,18 +281,20 @@ const Departments = () => {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <div className="flex space-x-2">
-                          <Button variant="secondary" size="sm">
-                            Edit
-                          </Button>
-                          <Button
-                            variant="danger"
-                            size="sm"
-                            onClick={() => handleDeleteDepartment(department.id)}
-                          >
-                            Delete
-                          </Button>
-                        </div>
+                        {canEdit && (
+                          <div className="flex space-x-2">
+                            <Button variant="secondary" size="sm">
+                              Edit
+                            </Button>
+                            <Button
+                              variant="danger"
+                              size="sm"
+                              onClick={() => handleDeleteDepartment(department.id)}
+                            >
+                              Delete
+                            </Button>
+                          </div>
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}

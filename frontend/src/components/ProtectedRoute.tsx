@@ -1,13 +1,21 @@
 import React from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { hasPermission } from '../types/permissions'
 
 interface ProtectedRouteProps {
   children: React.ReactNode
+  requiredPermission?: string
+  fallbackPath?: string
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { isAuthenticated, isLoading } = useAuth()
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ 
+  children, 
+  requiredPermission,
+  fallbackPath = '/dashboard' 
+}) => {
+  const { user, isAuthenticated, isLoading } = useAuth()
+  const location = useLocation()
 
   if (isLoading) {
     return (
@@ -20,11 +28,30 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     )
   }
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />
+  if (!isAuthenticated || !user) {
+    return <Navigate to="/login" state={{ from: location }} replace />
+  }
+
+  // Check if specific permission is required
+  if (requiredPermission && !hasPermission(user.role, requiredPermission)) {
+    return <Navigate to={fallbackPath} replace />
   }
 
   return <>{children}</>
+}
+
+// Higher-order component for route protection
+export const withPermission = (requiredPermission: string, fallbackPath?: string) => {
+  return (Component: React.ComponentType<any>) => {
+    return (props: any) => (
+      <ProtectedRoute
+        requiredPermission={requiredPermission}
+        {...(fallbackPath !== undefined && { fallbackPath })}
+      >
+        <Component {...props} />
+      </ProtectedRoute>
+    )
+  }
 }
 
 export default ProtectedRoute

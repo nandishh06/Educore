@@ -48,6 +48,131 @@ export class AuthService {
           token
         };
       }
+
+      if (credentials.email === 'principal@educore.com' && (!credentials.password || credentials.password === 'principal123')) {
+        const mockUser = {
+          id: '2',
+          email: 'principal@educore.com',
+          name: 'Principal User',
+          role: 'principal',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        };
+        
+        const token = JWTUtils.generateToken({
+          userId: mockUser.id,
+          email: mockUser.email,
+          name: mockUser.name,
+          role: mockUser.role
+        });
+        
+        return {
+          success: true,
+          message: 'Login successful',
+          user: mockUser,
+          token
+        };
+      }
+
+      if (credentials.email === 'hod@educore.com' && (!credentials.password || credentials.password === 'hod123')) {
+        const mockUser = {
+          id: '3',
+          email: 'hod@educore.com',
+          name: 'HOD Mathematics',
+          role: 'hod',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        };
+        
+        const token = JWTUtils.generateToken({
+          userId: mockUser.id,
+          email: mockUser.email,
+          name: mockUser.name,
+          role: mockUser.role
+        });
+        
+        return {
+          success: true,
+          message: 'Login successful',
+          user: mockUser,
+          token
+        };
+      }
+
+      if (credentials.email === 'teacher@educore.com' && (!credentials.password || credentials.password === 'teacher123')) {
+        const mockUser = {
+          id: '4',
+          email: 'teacher@educore.com',
+          name: 'Teacher User',
+          role: 'teacher',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        };
+        
+        const token = JWTUtils.generateToken({
+          userId: mockUser.id,
+          email: mockUser.email,
+          name: mockUser.name,
+          role: mockUser.role
+        });
+        
+        return {
+          success: true,
+          message: 'Login successful',
+          user: mockUser,
+          token
+        };
+      }
+
+      if (credentials.email === 'student@educore.com' && (!credentials.password || credentials.password === 'student123')) {
+        const mockUser = {
+          id: '5',
+          email: 'student@educore.com',
+          name: 'Student User',
+          role: 'student',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        };
+        
+        const token = JWTUtils.generateToken({
+          userId: mockUser.id,
+          email: mockUser.email,
+          name: mockUser.name,
+          role: mockUser.role
+        });
+        
+        return {
+          success: true,
+          message: 'Login successful',
+          user: mockUser,
+          token
+        };
+      }
+
+      if (credentials.email === 'parent@educore.com' && (!credentials.password || credentials.password === 'parent123')) {
+        const mockUser = {
+          id: '6',
+          email: 'parent@educore.com',
+          name: 'Parent User',
+          role: 'parent',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        };
+        
+        const token = JWTUtils.generateToken({
+          userId: mockUser.id,
+          email: mockUser.email,
+          name: mockUser.name,
+          role: mockUser.role
+        });
+        
+        return {
+          success: true,
+          message: 'Login successful',
+          user: mockUser,
+          token
+        };
+      }
       
       return {
         success: false,

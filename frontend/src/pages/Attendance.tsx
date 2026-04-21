@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Card, CardHeader, CardBody, Button, Badge, Table, TableHeader, TableBody, TableRow, TableCell, TableHead, Input } from '../components/ui'
+import { PermissionGuard } from '../components/PermissionGuard'
+import { PERMISSIONS } from '../types/permissions'
 
 interface AttendanceRecord {
   id: string
@@ -249,7 +251,9 @@ const Attendance = () => {
         <CardHeader>
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-medium text-gray-900">Attendance Records</h3>
-            <Button variant="primary" onClick={handleMarkAttendance}>Mark Attendance</Button>
+            <PermissionGuard permission={PERMISSIONS.MARK_ATTENDANCE}>
+              <Button variant="primary" onClick={handleMarkAttendance}>Mark Attendance</Button>
+            </PermissionGuard>
           </div>
         </CardHeader>
         <CardBody>

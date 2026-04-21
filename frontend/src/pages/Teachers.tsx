@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Card, CardHeader, CardBody, Button, Badge, Table, TableHeader, TableBody, TableRow, TableCell, TableHead, Input } from '../components/ui'
+import { PermissionGuard } from '../components/PermissionGuard'
 import { TeachersService, Teacher, TeacherStatistics, CreateTeacherData } from '../services'
+import { PERMISSIONS } from '../types/permissions'
+import { useAuth } from '../context/AuthContext'
 
 interface TeachersQuery {
   page: number
@@ -13,6 +16,7 @@ interface TeachersQuery {
 }
 
 const Teachers = () => {
+  const { user } = useAuth()
   const [teachers, setTeachers] = useState<Teacher[]>([])
   const [statistics, setStatistics] = useState<TeacherStatistics | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -45,6 +49,8 @@ const Teachers = () => {
   })
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedDepartment, setSelectedDepartment] = useState('')
+
+  const canEdit = user?.role === 'teacher' || user?.role === 'admin' || user?.role === 'principal'
 
   const filteredTeachers = teachers.filter(teacher => {
     const matchesSearch = teacher.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -343,7 +349,9 @@ const Teachers = () => {
         <CardHeader>
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-medium text-gray-900">All Teachers</h3>
-            <Button variant="primary" onClick={() => setShowAddModal(true)}>Add Teacher</Button>
+            <PermissionGuard permission={PERMISSIONS.ADD_TEACHER}>
+              <Button variant="primary" onClick={() => setShowAddModal(true)}>Add Teacher</Button>
+            </PermissionGuard>
           </div>
         </CardHeader>
         <CardBody>
@@ -408,18 +416,20 @@ const Teachers = () => {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <div className="flex space-x-2">
-                        <Button variant="secondary" size="sm" onClick={() => handleEditTeacher(teacher)}>
-                          Edit
-                        </Button>
-                        <Button
-                          variant="danger"
-                          size="sm"
-                          onClick={() => handleDeleteTeacher(teacher.id)}
-                        >
-                          Delete
-                        </Button>
-                      </div>
+                      {canEdit && (
+                        <div className="flex space-x-2">
+                          <Button variant="secondary" size="sm" onClick={() => handleEditTeacher(teacher)}>
+                            Edit
+                          </Button>
+                          <Button
+                            variant="danger"
+                            size="sm"
+                            onClick={() => handleDeleteTeacher(teacher.id)}
+                          >
+                            Delete
+                          </Button>
+                        </div>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}

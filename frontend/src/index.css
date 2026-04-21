@@ -14,6 +14,19 @@
   html {
     scroll-behavior: smooth;
   }
+  
+  /* Dark mode styles */
+  .dark {
+    color-scheme: dark;
+  }
+  
+  .dark body {
+    @apply bg-gray-900 text-gray-100;
+  }
+  
+  .dark * {
+    @apply border-gray-700;
+  }
 }
 
 @layer components {

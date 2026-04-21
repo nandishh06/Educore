@@ -162,4 +162,25 @@ export class AuthController {
       });
     }
   }
+
+  static async logout(_req: Request, res: Response): Promise<void> {
+    try {
+      // For JWT-based authentication, logout is mainly client-side
+      // The client should remove the token from storage
+      // Server can optionally add token to a blacklist if needed
+
+      res.status(200).json({
+        status: 'Success',
+        message: 'Logout successful',
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: 'Error',
+        message: 'Logout failed',
+        error: error instanceof Error ? error.message : 'Unknown error',
+        timestamp: new Date().toISOString()
+      });
+    }
+  }
 }

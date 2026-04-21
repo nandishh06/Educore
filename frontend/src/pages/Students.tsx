@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Card, CardHeader, CardBody, Button, Badge, Table, TableHeader, TableBody, TableRow, TableCell, TableHead, Input } from '../components/ui'
+import { PermissionGuard, ConditionalRender } from '../components/PermissionGuard'
 import { StudentsService, Student, StudentStatistics } from '../services'
+import { PERMISSIONS } from '../types/permissions'
 
 interface StudentsQuery {
   page: number
@@ -425,7 +427,9 @@ const Students = () => {
         <CardHeader>
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-medium text-gray-900">All Students</h3>
-            <Button variant="primary" onClick={() => setShowAddModal(true)}>Add Student</Button>
+            <PermissionGuard permission={PERMISSIONS.ADD_STUDENT}>
+              <Button variant="primary" onClick={() => setShowAddModal(true)}>Add Student</Button>
+            </PermissionGuard>
           </div>
         </CardHeader>
         <CardBody>

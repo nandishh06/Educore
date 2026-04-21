@@ -90,7 +90,22 @@ const Login = () => {
 
               <div className="text-center">
                 <p className="text-sm text-gray-600">
-                  Demo credentials: admin@educore.com / password123
+                  Demo credentials:
+                </p>
+                <p className="text-xs text-gray-500 mt-1">
+                  Admin: admin@educore.com / admin123
+                </p>
+                <p className="text-xs text-gray-500">
+                  Teacher: teacher@educore.com / teacher123
+                </p>
+                <p className="text-xs text-gray-500">
+                  Student: student@educore.com / student123
+                </p>
+                <p className="text-xs text-gray-500">
+                  Parent: parent@educore.com / parent123
+                </p>
+                <p className="text-xs text-gray-500">
+                  Principal: principal@educore.com / principal123
                 </p>
               </div>
             </form>
