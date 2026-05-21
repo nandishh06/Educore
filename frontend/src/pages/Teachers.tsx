@@ -189,6 +189,7 @@ const Teachers = () => {
       const newTeacher: Teacher = {
         id: Date.now().toString(),
         ...formData,
+        isActive: formData.isActive ?? true,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       }

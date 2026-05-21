@@ -7,7 +7,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: string | undefined
   helperText?: string
   variant?: 'default' | 'filled' | 'outlined'
-  size?: 'sm' | 'md' | 'lg'
+  inputSize?: 'sm' | 'md' | 'lg'
   leftIcon?: React.ReactNode
   rightIcon?: React.ReactNode
   showPasswordToggle?: boolean
@@ -22,7 +22,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       error,
       helperText,
       variant = 'default',
-      size = 'md',
+      inputSize = 'md',
       leftIcon,
       rightIcon,
       showPasswordToggle,
@@ -53,7 +53,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const inputClasses = clsx(
       baseClasses,
       variantClasses[variant],
-      sizeClasses[size],
+      sizeClasses[inputSize],
       fullWidth && 'w-full',
       leftIcon && 'pl-10',
       (rightIcon || showPasswordToggle) && 'pr-10',

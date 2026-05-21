@@ -79,7 +79,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const response = await AuthService.verifyToken()
           if (response.data?.valid && response.data?.user) {
             const user: User = {
-              userId: response.data.user.userId,
+              userId: response.data.user.id,
               email: response.data.user.email,
               name: response.data.user.name,
               role: response.data.user.role
@@ -112,7 +112,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       if (response.data?.user && response.data?.token) {
         const user: User = {
-          userId: response.data.user.userId,
+          userId: response.data.user.id,
           email: response.data.user.email,
           name: response.data.user.name,
           role: response.data.user.role
@@ -150,7 +150,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       if (response.data?.user && response.data?.token) {
         const user: User = {
-          userId: response.data.user.userId,
+          userId: response.data.user.id,
           email: response.data.user.email,
           name: response.data.user.name,
           role: response.data.user.role

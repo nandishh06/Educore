@@ -41,7 +41,7 @@ const Departments = () => {
     description: '',
     headOfDepartment: '',
     hodEmail: '',
-    isActive: true
+    isActive: true,
   })
 
   const canEdit = user?.role === 'teacher' || user?.role === 'admin' || user?.role === 'principal'
@@ -122,6 +122,7 @@ const Departments = () => {
       const newDepartment: Department = {
         id: Date.now().toString(),
         ...formData,
+        isActive: formData.isActive ?? true,
         totalTeachers: 0,
         totalStudents: 0,
         created_at: new Date().toISOString(),
@@ -138,7 +139,7 @@ const Departments = () => {
         description: '',
         headOfDepartment: '',
         hodEmail: '',
-        isActive: true
+        isActive: true,
       })
     } catch (error) {
       console.error('Error adding department:', error)

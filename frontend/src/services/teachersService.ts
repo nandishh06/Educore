@@ -62,26 +62,26 @@ export class TeachersService {
   private static readonly BASE_URL = '/teachers'
 
   static async getTeachers(params?: TeachersQueryParams): Promise<ApiResponse<TeachersResponse>> {
-    return apiRequest<TeachersResponse>('GET', this.BASE_URL, { params })
+    return apiRequest.get<TeachersResponse>(this.BASE_URL, { params })
   }
 
   static async getTeacherById(id: string): Promise<ApiResponse<Teacher>> {
-    return apiRequest<Teacher>('GET', `${this.BASE_URL}/${id}`)
+    return apiRequest.get<Teacher>(`${this.BASE_URL}/${id}`)
   }
 
   static async createTeacher(data: CreateTeacherData): Promise<ApiResponse<Teacher>> {
-    return apiRequest<Teacher>('POST', this.BASE_URL, { data })
+    return apiRequest.post<Teacher>(this.BASE_URL, data)
   }
 
   static async updateTeacher(id: string, data: UpdateTeacherData): Promise<ApiResponse<Teacher>> {
-    return apiRequest<Teacher>('PUT', `${this.BASE_URL}/${id}`, { data })
+    return apiRequest.put<Teacher>(`${this.BASE_URL}/${id}`, data)
   }
 
   static async deleteTeacher(id: string): Promise<ApiResponse<void>> {
-    return apiRequest<void>('DELETE', `${this.BASE_URL}/${id}`)
+    return apiRequest.delete<void>(`${this.BASE_URL}/${id}`)
   }
 
   static async getStatistics(): Promise<ApiResponse<TeacherStatistics>> {
-    return apiRequest<TeacherStatistics>('GET', `${this.BASE_URL}/statistics`)
+    return apiRequest.get<TeacherStatistics>(`${this.BASE_URL}/statistics`)
   }
 }

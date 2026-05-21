@@ -2,10 +2,7 @@
 
 export type UserRole = 'admin' | 'principal' | 'hod' | 'teacher'
 
-export interface Permission {
-  resource: string
-  action: string
-}
+export type Permission = string
 
 export interface RolePermissions {
   role: UserRole
@@ -165,7 +162,7 @@ export const ROLE_PERMISSIONS: RolePermissions[] = [
 // Helper functions to check permissions
 export const hasPermission = (userRole: UserRole, permission: string): boolean => {
   const roleConfig = ROLE_PERMISSIONS.find(rp => rp.role === userRole)
-  return roleConfig?.permissions.some(p => `${p.resource}_${p.action}` === permission) || false
+  return roleConfig?.permissions.includes(permission) || false
 }
 
 export const canAccessNavigation = (userRole: UserRole, navigationItem: string): boolean => {

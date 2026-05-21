@@ -164,7 +164,7 @@ const Students = () => {
       setFormData(prev => ({
         ...prev,
         [parent]: {
-          ...prev[parent as keyof typeof prev],
+          ...(prev[parent as keyof typeof prev] as object),
           [child]: value
         }
       }))
@@ -280,7 +280,10 @@ const Students = () => {
       dateOfBirth: student.dateOfBirth,
       gender: student.gender,
       address: student.address,
-      emergencyContact: student.emergencyContact,
+      emergencyContact: {
+  ...student.emergencyContact,
+  email: student.emergencyContact.email || ''
+},
       academicInfo: student.academicInfo
     })
     setShowEditModal(true)
