@@ -5,7 +5,10 @@ const supabaseAnonKey: string = process.env['SUPABASE_ANON_KEY'] || '';
 
 let supabase: SupabaseClient | null = null;
 
-if (supabaseUrl && supabaseAnonKey) {
+// A valid Supabase anon key is a JWT (starts with 'eyJ')
+const isValidKey = supabaseUrl.startsWith('https://') && supabaseAnonKey.startsWith('eyJ');
+
+if (isValidKey) {
   supabase = createClient(supabaseUrl, supabaseAnonKey);
 }
 

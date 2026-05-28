@@ -2,7 +2,7 @@ export interface User {
   userId: string
   email: string
   name: string
-  role: 'admin' | 'principal' | 'hod' | 'teacher'
+  role: 'admin' | 'principal' | 'hod' | 'teacher' | 'student' | 'parent'
 }
 
 export interface LoginCredentials {

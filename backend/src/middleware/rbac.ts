@@ -1,7 +1,7 @@
 import { Response, NextFunction } from 'express';
 import { AuthenticatedRequest } from './auth';
 
-export type UserRole = 'admin' | 'principal' | 'hod' | 'teacher';
+export type UserRole = 'admin' | 'principal' | 'hod' | 'teacher' | 'student' | 'parent';
 
 export interface RolePermissions {
   [key: string]: {
@@ -12,17 +12,19 @@ export interface RolePermissions {
 
 // Define role hierarchy (higher number = more permissions)
 export const roleHierarchy: Record<UserRole, number> = {
-  admin: 4,
-  principal: 3,
-  hod: 2,
-  teacher: 1
+  admin: 5,
+  hod: 4,
+  teacher: 3,
+  principal: 2, // principal is view-only — lower than teacher in write hierarchy
+  student: 1,
+  parent: 1
 };
 
 // Define permissions for different resources
 export const permissions: RolePermissions = {
-  // User management
+  // User management — admin only
   'users:read': {
-    canAccess: ['admin', 'principal'],
+    canAccess: ['admin'],
     description: 'Read user information'
   },
   'users:create': {
@@ -30,7 +32,7 @@ export const permissions: RolePermissions = {
     description: 'Create new users'
   },
   'users:update': {
-    canAccess: ['admin', 'principal'],
+    canAccess: ['admin'],
     description: 'Update user information'
   },
   'users:delete': {
@@ -40,19 +42,19 @@ export const permissions: RolePermissions = {
 
   // Student management
   'students:read': {
-    canAccess: ['admin', 'principal', 'hod', 'teacher'],
+    canAccess: ['admin', 'principal', 'hod', 'teacher', 'student', 'parent'],
     description: 'Read student information'
   },
   'students:create': {
-    canAccess: ['admin', 'principal', 'hod'],
+    canAccess: ['admin', 'hod'],
     description: 'Create new students'
   },
   'students:update': {
-    canAccess: ['admin', 'principal', 'hod'],
+    canAccess: ['admin', 'hod'],
     description: 'Update student information'
   },
   'students:delete': {
-    canAccess: ['admin', 'principal'],
+    canAccess: ['admin'],
     description: 'Delete students'
   },
 
@@ -62,11 +64,11 @@ export const permissions: RolePermissions = {
     description: 'Read teacher information'
   },
   'teachers:create': {
-    canAccess: ['admin', 'principal'],
+    canAccess: ['admin', 'hod'],
     description: 'Create new teachers'
   },
   'teachers:update': {
-    canAccess: ['admin', 'principal'],
+    canAccess: ['admin', 'hod'],
     description: 'Update teacher information'
   },
   'teachers:delete': {
@@ -76,15 +78,15 @@ export const permissions: RolePermissions = {
 
   // Department management
   'departments:read': {
-    canAccess: ['admin', 'principal', 'hod'],
+    canAccess: ['admin', 'principal', 'hod', 'teacher'],
     description: 'Read department information'
   },
   'departments:create': {
-    canAccess: ['admin', 'principal'],
+    canAccess: ['admin'],
     description: 'Create new departments'
   },
   'departments:update': {
-    canAccess: ['admin', 'principal'],
+    canAccess: ['admin', 'hod'],
     description: 'Update department information'
   },
   'departments:delete': {
@@ -94,29 +96,33 @@ export const permissions: RolePermissions = {
 
   // Attendance management
   'attendance:read': {
-    canAccess: ['admin', 'principal', 'hod', 'teacher'],
+    canAccess: ['admin', 'principal', 'hod', 'teacher', 'student', 'parent'],
     description: 'Read attendance records'
   },
   'attendance:create': {
-    canAccess: ['admin', 'principal', 'hod', 'teacher'],
+    canAccess: ['admin', 'hod', 'teacher'],
     description: 'Create attendance records'
   },
   'attendance:update': {
-    canAccess: ['admin', 'principal', 'hod', 'teacher'],
+    canAccess: ['admin', 'hod', 'teacher'],
     description: 'Update attendance records'
+  },
+  'attendance:delete': {
+    canAccess: ['admin'],
+    description: 'Delete attendance records'
   },
 
   // Marks management
   'marks:read': {
-    canAccess: ['admin', 'principal', 'hod', 'teacher'],
+    canAccess: ['admin', 'principal', 'hod', 'teacher', 'student', 'parent'],
     description: 'Read marks and grades'
   },
   'marks:create': {
-    canAccess: ['admin', 'principal', 'hod', 'teacher'],
+    canAccess: ['admin', 'hod', 'teacher'],
     description: 'Create marks and grades'
   },
   'marks:update': {
-    canAccess: ['admin', 'principal', 'hod', 'teacher'],
+    canAccess: ['admin', 'hod', 'teacher'],
     description: 'Update marks and grades'
   },
 
@@ -126,25 +132,25 @@ export const permissions: RolePermissions = {
     description: 'Read fee information'
   },
   'fees:create': {
-    canAccess: ['admin', 'principal'],
+    canAccess: ['admin'],
     description: 'Create fee records'
   },
   'fees:update': {
-    canAccess: ['admin', 'principal'],
+    canAccess: ['admin'],
     description: 'Update fee records'
   },
 
   // Timetable management
   'timetable:read': {
-    canAccess: ['admin', 'principal', 'hod', 'teacher'],
+    canAccess: ['admin', 'principal', 'hod', 'teacher', 'student', 'parent'],
     description: 'Read timetable information'
   },
   'timetable:create': {
-    canAccess: ['admin', 'principal', 'hod'],
+    canAccess: ['admin', 'hod'],
     description: 'Create timetable'
   },
   'timetable:update': {
-    canAccess: ['admin', 'principal', 'hod'],
+    canAccess: ['admin', 'hod'],
     description: 'Update timetable'
   },
 
@@ -264,8 +270,8 @@ export const requireMinimumRole = (minimumRole: UserRole) => {
 // Helper function to get all permissions for a role
 export const getRolePermissions = (role: UserRole): string[] => {
   return Object.entries(permissions)
-    .filter(([_, config]) => config.canAccess.includes(role))
-    .map(([permission, _]) => permission);
+    .filter(([_key, config]) => config.canAccess.includes(role))
+    .map(([permission, _config]) => permission);
 };
 
 // Helper function to check if user can access their own data
@@ -277,9 +283,6 @@ export const canAccessOwnData = (req: AuthenticatedRequest, targetUserId: string
   
   // Admin can access any data
   if (req.user.role === 'admin') return true;
-  
-  // Principal can access most data
-  if (req.user.role === 'principal') return true;
   
   return false;
 };

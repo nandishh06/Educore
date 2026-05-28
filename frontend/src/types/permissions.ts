@@ -1,6 +1,6 @@
 // Permission definitions for role-based access control
 
-export type UserRole = 'admin' | 'principal' | 'hod' | 'teacher'
+export type UserRole = 'admin' | 'principal' | 'hod' | 'teacher' | 'student' | 'parent'
 
 export type Permission = string
 
@@ -95,25 +95,15 @@ export const ROLE_PERMISSIONS: RolePermissions[] = [
   {
     role: 'principal',
     permissions: [
-      // Principal can view and manage most things, but not system admin
+      // Principal is view-only — can see everything but cannot add, edit, or delete
       PERMISSIONS.VIEW_DASHBOARD,
       PERMISSIONS.VIEW_DASHBOARD_STATS,
       PERMISSIONS.VIEW_STUDENTS,
-      PERMISSIONS.ADD_STUDENT,
-      PERMISSIONS.EDIT_STUDENT,
-      PERMISSIONS.DELETE_STUDENT,
       PERMISSIONS.VIEW_STUDENT_DETAILS,
       PERMISSIONS.VIEW_TEACHERS,
-      PERMISSIONS.ADD_TEACHER,
-      PERMISSIONS.EDIT_TEACHER,
-      PERMISSIONS.DELETE_TEACHER,
       PERMISSIONS.VIEW_TEACHER_DETAILS,
       PERMISSIONS.VIEW_DEPARTMENTS,
-      PERMISSIONS.ADD_DEPARTMENT,
-      PERMISSIONS.EDIT_DEPARTMENT,
-      PERMISSIONS.MANAGE_DEPARTMENT,
       PERMISSIONS.VIEW_ATTENDANCE,
-      PERMISSIONS.MARK_ATTENDANCE,
       PERMISSIONS.VIEW_ATTENDANCE_REPORTS,
       PERMISSIONS.VIEW_SETTINGS,
       PERMISSIONS.VIEW_REPORTS,
@@ -156,6 +146,26 @@ export const ROLE_PERMISSIONS: RolePermissions[] = [
       PERMISSIONS.VIEW_ATTENDANCE_REPORTS
     ],
     navigationItems: ['dashboard', 'students', 'attendance']
+  },
+  {
+    role: 'student',
+    // Student is view-only — can only see dashboard and their own attendance
+    permissions: [
+      PERMISSIONS.VIEW_DASHBOARD,
+      PERMISSIONS.VIEW_ATTENDANCE,
+      PERMISSIONS.VIEW_ATTENDANCE_REPORTS
+    ],
+    navigationItems: ['dashboard', 'attendance']
+  },
+  {
+    role: 'parent',
+    // Parent is view-only — can only see dashboard and attendance reports
+    permissions: [
+      PERMISSIONS.VIEW_DASHBOARD,
+      PERMISSIONS.VIEW_ATTENDANCE,
+      PERMISSIONS.VIEW_ATTENDANCE_REPORTS
+    ],
+    navigationItems: ['dashboard', 'attendance']
   }
 ]
 

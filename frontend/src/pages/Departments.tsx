@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Search } from 'lucide-react'
 import { Card, CardHeader, CardBody, Button, Badge, Table, TableHeader, TableBody, TableRow, TableCell, TableHead, Input } from '../components/ui'
 import { PermissionGuard } from '../components/PermissionGuard'
 import { PERMISSIONS } from '../types/permissions'
@@ -227,7 +228,7 @@ const Departments = () => {
               placeholder="Search departments..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              leftIcon={<span>search</span>}
+              leftIcon={<Search className="h-4 w-4" />}
             />
           </div>
 

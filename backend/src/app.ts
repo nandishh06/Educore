@@ -1,7 +1,10 @@
+import dotenv from 'dotenv';
+// Load env vars FIRST before any other imports read process.env
+dotenv.config();
+
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import dotenv from 'dotenv';
 import databaseRoutes from './routes/database';
 import authRoutes from './routes/auth';
 import rbacRoutes from './routes/rbac';
@@ -9,9 +12,6 @@ import studentRoutes from './routes/students';
 import teacherRoutes from './routes/teachers';
 import departmentRoutes from './routes/departments';
 import attendanceRoutes from './routes/attendance';
-
-// Load environment variables
-dotenv.config();
 
 const app = express();
 

@@ -3,7 +3,7 @@ import { apiRequest, ApiResponse } from '../lib/api'
 // Auth interfaces
 export interface LoginCredentials {
   email: string
-  password?: string
+  password: string
 }
 
 export interface RegisterData {
@@ -16,9 +16,10 @@ export interface RegisterData {
 export interface AuthResponse {
   user: {
     id: string
+    userId?: string
     email: string
     name: string
-    role: 'admin' | 'principal' | 'hod' | 'teacher'
+    role: 'admin' | 'principal' | 'hod' | 'teacher' | 'student' | 'parent'
   }
   token: string
 }
@@ -27,7 +28,7 @@ export interface UserProfile {
   id: string
   email: string
   name: string
-  role: 'admin' | 'principal' | 'hod' | 'teacher'
+  role: 'admin' | 'principal' | 'hod' | 'teacher' | 'student' | 'parent'
   created_at: string
   updated_at: string
 }

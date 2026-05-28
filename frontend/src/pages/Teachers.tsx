@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Search } from 'lucide-react'
 import { Card, CardHeader, CardBody, Button, Badge, Table, TableHeader, TableBody, TableRow, TableCell, TableHead, Input } from '../components/ui'
 import { PermissionGuard } from '../components/PermissionGuard'
 import { TeachersService, Teacher, TeacherStatistics, CreateTeacherData } from '../services'
@@ -362,7 +363,7 @@ const Teachers = () => {
               placeholder="Search teachers..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              leftIcon={<span>search</span>}
+              leftIcon={<Search className="h-4 w-4" />}
             />
             <select
               className="input"
@@ -440,7 +441,7 @@ const Teachers = () => {
 
           {filteredTeachers.length === 0 && (
             <div className="text-center py-12">
-              <div className="text-gray-500">
+              <div className="text-gray-500 dark:text-gray-400">
                 <p>No teachers found</p>
                 <p className="mt-2">Try adjusting your search or filters</p>
               </div>
@@ -452,12 +453,12 @@ const Teachers = () => {
       {/* Add Teacher Modal */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-gray-900">Add New Teacher</h2>
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Add New Teacher</h2>
               <button
                 onClick={() => setShowAddModal(false)}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
               >
                 ×
               </button>
@@ -465,8 +466,8 @@ const Teachers = () => {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Personal Information */}
-              <div className="border-b pb-4">
-                <h3 className="text-lg font-medium text-gray-900 mb-3">Personal Information</h3>
+              <div className="border-b dark:border-gray-700 pb-4">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-3">Personal Information</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <Input
                     label="First Name"
@@ -529,16 +530,16 @@ const Teachers = () => {
 
               {/* Status */}
               <div>
-                <h3 className="text-lg font-medium text-gray-900 mb-3">Status</h3>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-3">Status</h3>
                 <div className="flex items-center space-x-3">
                   <input
                     type="checkbox"
                     id="isActive"
                     checked={formData.isActive}
                     onChange={(e) => handleInputChange('isActive', e.target.checked)}
-                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
                   />
-                  <label htmlFor="isActive" className="text-sm font-medium text-gray-700">
+                  <label htmlFor="isActive" className="text-sm font-medium text-gray-700 dark:text-gray-300">
                     Active Teacher
                   </label>
                 </div>
@@ -570,15 +571,15 @@ const Teachers = () => {
       {/* Edit Teacher Modal */}
       {showEditModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-gray-900">Edit Teacher</h2>
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Edit Teacher</h2>
               <button
                 onClick={() => {
                   setShowEditModal(false)
                   setEditingTeacher(null)
                 }}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
               >
                 ×
               </button>
@@ -586,8 +587,8 @@ const Teachers = () => {
 
             <form onSubmit={handleUpdateTeacher} className="space-y-4">
               {/* Personal Information */}
-              <div className="border-b pb-4">
-                <h3 className="text-lg font-medium text-gray-900 mb-3">Personal Information</h3>
+              <div className="border-b dark:border-gray-700 pb-4">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-3">Personal Information</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <Input
                     label="First Name"
@@ -617,8 +618,8 @@ const Teachers = () => {
               </div>
 
               {/* Professional Information */}
-              <div className="border-b pb-4">
-                <h3 className="text-lg font-medium text-gray-900 mb-3">Professional Information</h3>
+              <div className="border-b dark:border-gray-700 pb-4">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-3">Professional Information</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <Input
                     label="Employee ID"
@@ -650,16 +651,16 @@ const Teachers = () => {
 
               {/* Status */}
               <div>
-                <h3 className="text-lg font-medium text-gray-900 mb-3">Status</h3>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-3">Status</h3>
                 <div className="flex items-center space-x-3">
                   <input
                     type="checkbox"
                     id="isActive"
                     checked={formData.isActive}
                     onChange={(e) => handleInputChange('isActive', e.target.checked)}
-                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
                   />
-                  <label htmlFor="isActive" className="text-sm font-medium text-gray-700">
+                  <label htmlFor="isActive" className="text-sm font-medium text-gray-700 dark:text-gray-300">
                     Active Teacher
                   </label>
                 </div>

@@ -38,11 +38,11 @@ const Table = React.forwardRef<HTMLTableElement, TableProps>(
     },
     ref
   ) => {
-    const baseClasses = 'min-w-full divide-y divide-gray-200'
+    const baseClasses = 'min-w-full divide-y divide-gray-200 dark:divide-gray-700'
     
     const classes = clsx(
       baseClasses,
-      striped && 'divide-y divide-gray-100',
+      striped && 'divide-y divide-gray-100 dark:divide-gray-700',
       compact && 'text-sm',
       className
     )
@@ -67,7 +67,7 @@ const TableHeader = React.forwardRef<HTMLTableSectionElement, TableHeaderProps>(
     ref
   ) => {
     const classes = clsx(
-      'bg-gray-50',
+      'bg-gray-50 dark:bg-gray-700',
       className
     )
 
@@ -89,7 +89,7 @@ const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
     ref
   ) => {
     const classes = clsx(
-      'bg-white divide-y divide-gray-200',
+      'bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700',
       className
     )
 
@@ -113,8 +113,8 @@ const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
   ) => {
     const classes = clsx(
       'transition-colors duration-150',
-      selected && 'bg-primary-50',
-      !selected && 'hover:bg-gray-50',
+      selected && 'bg-primary-50 dark:bg-primary-900/20',
+      !selected && 'hover:bg-gray-50 dark:hover:bg-gray-700/50',
       className
     )
 
@@ -139,9 +139,9 @@ const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
     const baseClasses = 'whitespace-nowrap text-sm'
     
     const variantClasses = {
-      default: 'text-gray-900',
-      header: 'text-xs font-medium text-gray-500 uppercase tracking-wider',
-      numeric: 'text-gray-900 text-right'
+      default: 'text-gray-900 dark:text-gray-100',
+      header: 'text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider',
+      numeric: 'text-gray-900 dark:text-gray-100 text-right'
     }
 
     const classes = clsx(
@@ -173,8 +173,8 @@ const TableHead = React.forwardRef<HTMLTableCellElement, TableHeadProps>(
     ref
   ) => {
     const classes = clsx(
-      'px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider',
-      sortable && 'cursor-pointer hover:bg-gray-100',
+      'px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider',
+      sortable && 'cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700',
       className
     )
 
@@ -207,7 +207,7 @@ const TableActions = ({ children }: { children: React.ReactNode }) => (
 )
 
 const TableMoreActions = ({ children }: { children: React.ReactNode }) => (
-  <button className="p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded">
+  <button className="p-1 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
     <MoreHorizontal className="h-4 w-4" />
   </button>
 )

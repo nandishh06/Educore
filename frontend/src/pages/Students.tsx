@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Search } from 'lucide-react'
 import { Card, CardHeader, CardBody, Button, Badge, Table, TableHeader, TableBody, TableRow, TableCell, TableHead, Input } from '../components/ui'
 import { PermissionGuard, ConditionalRender } from '../components/PermissionGuard'
 import { StudentsService, Student, StudentStatistics } from '../services'
@@ -32,7 +33,6 @@ const Students = () => {
   })
   const [total, setTotal] = useState(0)
   const [totalPages, setTotalPages] = useState(0)
-  const [showAddModal, setShowAddModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [editingStudent, setEditingStudent] = useState<Student | null>(null)
@@ -192,7 +192,6 @@ const Students = () => {
       
       setStudents(prev => [newStudent, ...prev])
       setTotal(prev => prev + 1)
-      setShowAddModal(false)
       
       // Reset form
       setFormData({
@@ -442,7 +441,7 @@ const Students = () => {
               placeholder="Search students..."
               value={query.search}
               onChange={(e) => handleSearch(e.target.value)}
-              leftIcon={<span>search</span>}
+              leftIcon={<Search className="h-4 w-4" />}
             />
             <Input
               placeholder="Grade"
@@ -551,16 +550,20 @@ const Students = () => {
                         </TableCell>
                         <TableCell>
                           <div className="flex space-x-2">
-                            <Button variant="secondary" size="sm" onClick={() => handleEditStudent(student)}>
-                              Edit
-                            </Button>
-                            <Button
-                              variant="danger"
-                              size="sm"
-                              onClick={() => handleDeleteStudent(student.id)}
-                            >
-                              Delete
-                            </Button>
+                            <PermissionGuard permission={PERMISSIONS.EDIT_STUDENT}>
+                              <Button variant="secondary" size="sm" onClick={() => handleEditStudent(student)}>
+                                Edit
+                              </Button>
+                            </PermissionGuard>
+                            <PermissionGuard permission={PERMISSIONS.DELETE_STUDENT}>
+                              <Button
+                                variant="danger"
+                                size="sm"
+                                onClick={() => handleDeleteStudent(student.id)}
+                              >
+                                Delete
+                              </Button>
+                            </PermissionGuard>
                           </div>
                         </TableCell>
                       </TableRow>
@@ -600,190 +603,6 @@ const Students = () => {
           )}
         </CardBody>
       </Card>
-
-      {/* Add Student Modal */}
-      {showAddModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-gray-900">Add New Student</h2>
-              <button
-                onClick={() => setShowAddModal(false)}
-                className="text-gray-400 hover:text-gray-600"
-              >
-                ×
-              </button>
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Personal Information */}
-              <div className="border-b pb-4">
-                <h3 className="text-lg font-medium text-gray-900 mb-3">Personal Information</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <Input
-                    label="First Name"
-                    value={formData.firstName}
-                    onChange={(e) => handleInputChange('firstName', e.target.value)}
-                    required
-                  />
-                  <Input
-                    label="Last Name"
-                    value={formData.lastName}
-                    onChange={(e) => handleInputChange('lastName', e.target.value)}
-                    required
-                  />
-                  <Input
-                    label="Email"
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => handleInputChange('email', e.target.value)}
-                    required
-                  />
-                  <Input
-                    label="Phone"
-                    value={formData.phone}
-                    onChange={(e) => handleInputChange('phone', e.target.value)}
-                  />
-                  <Input
-                    label="Date of Birth"
-                    type="date"
-                    value={formData.dateOfBirth}
-                    onChange={(e) => handleInputChange('dateOfBirth', e.target.value)}
-                    required
-                  />
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
-                    <select
-                      value={formData.gender}
-                      onChange={(e) => handleInputChange('gender', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                      required
-                    >
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              {/* Address */}
-              <div className="border-b pb-4">
-                <h3 className="text-lg font-medium text-gray-900 mb-3">Address</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <Input
-                    label="Street"
-                    value={formData.address.street}
-                    onChange={(e) => handleInputChange('address.street', e.target.value)}
-                  />
-                  <Input
-                    label="City"
-                    value={formData.address.city}
-                    onChange={(e) => handleInputChange('address.city', e.target.value)}
-                  />
-                  <Input
-                    label="State"
-                    value={formData.address.state}
-                    onChange={(e) => handleInputChange('address.state', e.target.value)}
-                  />
-                  <Input
-                    label="Postal Code"
-                    value={formData.address.postalCode}
-                    onChange={(e) => handleInputChange('address.postalCode', e.target.value)}
-                  />
-                  <Input
-                    label="Country"
-                    value={formData.address.country}
-                    onChange={(e) => handleInputChange('address.country', e.target.value)}
-                  />
-                </div>
-              </div>
-
-              {/* Academic Information */}
-              <div className="border-b pb-4">
-                <h3 className="text-lg font-medium text-gray-900 mb-3">Academic Information</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <Input
-                    label="Roll Number"
-                    value={formData.academicInfo.rollNumber}
-                    onChange={(e) => handleInputChange('academicInfo.rollNumber', e.target.value)}
-                    required
-                  />
-                  <Input
-                    label="Grade"
-                    value={formData.academicInfo.grade}
-                    onChange={(e) => handleInputChange('academicInfo.grade', e.target.value)}
-                    required
-                  />
-                  <Input
-                    label="Section"
-                    value={formData.academicInfo.section}
-                    onChange={(e) => handleInputChange('academicInfo.section', e.target.value)}
-                    required
-                  />
-                  <Input
-                    label="Admission Date"
-                    type="date"
-                    value={formData.academicInfo.admissionDate}
-                    onChange={(e) => handleInputChange('academicInfo.admissionDate', e.target.value)}
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* Emergency Contact */}
-              <div>
-                <h3 className="text-lg font-medium text-gray-900 mb-3">Emergency Contact</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <Input
-                    label="Contact Name"
-                    value={formData.emergencyContact.name}
-                    onChange={(e) => handleInputChange('emergencyContact.name', e.target.value)}
-                    required
-                  />
-                  <Input
-                    label="Relationship"
-                    value={formData.emergencyContact.relationship}
-                    onChange={(e) => handleInputChange('emergencyContact.relationship', e.target.value)}
-                    required
-                  />
-                  <Input
-                    label="Contact Phone"
-                    value={formData.emergencyContact.phone}
-                    onChange={(e) => handleInputChange('emergencyContact.phone', e.target.value)}
-                    required
-                  />
-                  <Input
-                    label="Contact Email"
-                    type="email"
-                    value={formData.emergencyContact.email}
-                    onChange={(e) => handleInputChange('emergencyContact.email', e.target.value)}
-                  />
-                </div>
-              </div>
-
-              {/* Form Actions */}
-              <div className="flex justify-end space-x-3 pt-4">
-                <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={() => setShowAddModal(false)}
-                  disabled={isSubmitting}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  variant="primary"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? 'Adding...' : 'Add Student'}
-                </Button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
 
       {/* Edit Student Modal */}
       {showEditModal && (

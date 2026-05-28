@@ -170,8 +170,8 @@ const Dashboard = () => {
   return (
     <div className="animate-fade-in">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-gray-600">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Dashboard</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Welcome back, {user?.name}! Here's what's happening at EduCore School Management System
         </p>
       </div>
@@ -185,8 +185,8 @@ const Dashboard = () => {
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">Total Students</dt>
-                  <dd className="text-lg font-medium text-gray-900">{stats.totalStudents.toLocaleString()}</dd>
+                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Total Students</dt>
+                  <dd className="text-lg font-medium text-gray-900 dark:text-gray-100">{stats.totalStudents.toLocaleString()}</dd>
                 </dl>
               </div>
             </div>
@@ -201,8 +201,8 @@ const Dashboard = () => {
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">Total Teachers</dt>
-                  <dd className="text-lg font-medium text-gray-900">{stats.totalTeachers}</dd>
+                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Total Teachers</dt>
+                  <dd className="text-lg font-medium text-gray-900 dark:text-gray-100">{stats.totalTeachers}</dd>
                 </dl>
               </div>
             </div>
@@ -217,8 +217,8 @@ const Dashboard = () => {
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">Departments</dt>
-                  <dd className="text-lg font-medium text-gray-900">{stats.totalDepartments}</dd>
+                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Departments</dt>
+                  <dd className="text-lg font-medium text-gray-900 dark:text-gray-100">{stats.totalDepartments}</dd>
                 </dl>
               </div>
             </div>
@@ -233,8 +233,8 @@ const Dashboard = () => {
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">Attendance Rate</dt>
-                  <dd className="text-lg font-medium text-gray-900">{stats.attendanceRate}%</dd>
+                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Attendance Rate</dt>
+                  <dd className="text-lg font-medium text-gray-900 dark:text-gray-100">{stats.attendanceRate}%</dd>
                 </dl>
               </div>
             </div>
@@ -253,9 +253,9 @@ const Dashboard = () => {
                     <div className={`h-8 w-8 ${getActivityIcon(activity.type)} rounded-full`}></div>
                   </div>
                   <div className="ml-4 flex-1">
-                    <p className="text-sm font-medium text-gray-900">{activity.title}</p>
-                    <p className="text-sm text-gray-500">{activity.description}</p>
-                    <p className="text-xs text-gray-400 mt-1">{activity.timestamp}</p>
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{activity.title}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{activity.description}</p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{activity.timestamp}</p>
                   </div>
                   <div className="ml-auto">
                     {getActivityBadge(activity)}
@@ -266,22 +266,24 @@ const Dashboard = () => {
           </CardBody>
         </Card>
 
-        <Card>
-          <CardHeader title="Quick Actions" />
-          <CardBody>
-            <div className="grid grid-cols-2 gap-4">
-              <Button variant="primary" onClick={() => navigate('/students')}>Add Student</Button>
-              <Button variant="secondary" onClick={() => navigate('/attendance')}>Mark Attendance</Button>
-              <Button variant="secondary" onClick={() => setIsReportModalOpen(true)}>Generate Report</Button>
-              <Button variant="secondary" onClick={() => {
-                // TODO: Implement calendar view functionality
-                console.log('Calendar view feature coming soon!');
-                // For now, show a simple alert
-                alert('Calendar view feature is coming soon! This will display academic calendar, events, and important dates.');
-              }}>View Calendar</Button>
-            </div>
-          </CardBody>
-        </Card>
+        {user?.role !== 'student' && user?.role !== 'parent' && (
+          <Card>
+            <CardHeader title="Quick Actions" />
+            <CardBody>
+              <div className="grid grid-cols-2 gap-4">
+                <Button variant="primary" onClick={() => navigate('/students')}>Add Student</Button>
+                <Button variant="secondary" onClick={() => navigate('/attendance')}>Mark Attendance</Button>
+                <Button variant="secondary" onClick={() => setIsReportModalOpen(true)}>Generate Report</Button>
+                <Button variant="secondary" onClick={() => {
+                  // TODO: Implement calendar view functionality
+                  console.log('Calendar view feature coming soon!');
+                  // For now, show a simple alert
+                  alert('Calendar view feature is coming soon! This will display academic calendar, events, and important dates.');
+                }}>View Calendar</Button>
+              </div>
+            </CardBody>
+          </Card>
+        )}
       </div>
 
       {studentStats && (
@@ -292,15 +294,15 @@ const Dashboard = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-primary-600">{studentStats.total}</div>
-                  <div className="text-sm text-gray-500">Total Students</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">Total Students</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-success-600">{studentStats.active}</div>
-                  <div className="text-sm text-gray-500">Active Students</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">Active Students</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-gray-600">{studentStats.inactive}</div>
-                  <div className="text-sm text-gray-500">Inactive Students</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">Inactive Students</div>
                 </div>
               </div>
             </CardBody>

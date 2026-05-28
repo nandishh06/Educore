@@ -31,9 +31,10 @@ test.describe('Authentication Flow', () => {
     await page.locator('input[type="password"]').fill('password123')
     await page.locator('button[type="submit"]').click()
     
-    // Should show email validation error
+    // Should show email validation error via native browser validity
     const emailInput = page.locator('input[type="email"]')
-    await expect(emailInput).toBeInvalid()
+    const isInvalid = await emailInput.evaluate((el) => !(el as HTMLInputElement).validity.valid)
+    expect(isInvalid).toBe(true)
   })
 
   test('should handle successful login', async ({ page }) => {

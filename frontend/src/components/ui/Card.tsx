@@ -36,9 +36,9 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     const baseClasses = 'overflow-hidden transition-all duration-200'
     
     const variantClasses = {
-      default: 'bg-white border border-gray-200',
-      outlined: 'bg-white border-2 border-gray-200',
-      elevated: 'bg-white border border-gray-100'
+      default: 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700',
+      outlined: 'bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700',
+      elevated: 'bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700'
     }
     
     const paddingClasses = {
@@ -96,7 +96,7 @@ const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
   ) => {
     const classes = clsx(
       'flex items-center justify-between',
-      !children && 'px-6 py-4 border-b border-gray-100 bg-gray-50',
+      !children && 'px-6 py-4 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50',
       children && 'mb-4',
       className
     )
@@ -105,9 +105,9 @@ const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
       <div className={classes} ref={ref} {...props}>
         {title && (
           <div>
-            <h3 className="text-lg font-medium text-gray-900">{title}</h3>
+            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">{title}</h3>
             {subtitle && (
-              <p className="text-sm text-gray-500 mt-1">{subtitle}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{subtitle}</p>
             )}
           </div>
         )}
@@ -149,7 +149,7 @@ const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
     ref
   ) => {
     const classes = clsx(
-      'px-6 py-4 border-t border-gray-100 bg-gray-50',
+      'px-6 py-4 border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50',
       className
     )
 

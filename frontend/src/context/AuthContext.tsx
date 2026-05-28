@@ -77,12 +77,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         
         try {
           const response = await AuthService.verifyToken()
-          if (response.data?.valid && response.data?.user) {
+          // Backend returns { status, user: { userId, email, name, role } }
+          // The axios wrapper puts the whole response body as the returned object
+          const userData = (response as any).user ?? response.data?.user
+          if (userData) {
             const user: User = {
-              userId: response.data.user.id,
-              email: response.data.user.email,
-              name: response.data.user.name,
-              role: response.data.user.role
+              userId: userData.userId ?? userData.id,
+              email: userData.email,
+              name: userData.name,
+              role: userData.role as User['role']
             }
             
             dispatch({
@@ -111,11 +114,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const response = await AuthService.login(credentials)
       
       if (response.data?.user && response.data?.token) {
+        const u = response.data.user
         const user: User = {
-          userId: response.data.user.id,
-          email: response.data.user.email,
-          name: response.data.user.name,
-          role: response.data.user.role
+          userId: (u as any).userId ?? u.id,
+          email: u.email,
+          name: u.name,
+          role: u.role as User['role']
         }
         
         AuthService.setToken(response.data.token)

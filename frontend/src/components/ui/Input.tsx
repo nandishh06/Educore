@@ -39,9 +39,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const baseClasses = 'block transition-colors duration-200'
     
     const variantClasses = {
-      default: 'border border-gray-300 bg-white focus:border-primary-500 focus:ring-2 focus:ring-primary-500',
-      filled: 'border-0 bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary-500',
-      outlined: 'border-2 border-gray-300 bg-transparent focus:border-primary-500 focus:ring-0'
+      default: 'border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500',
+      filled: 'border-0 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:bg-white dark:focus:bg-gray-800 focus:ring-2 focus:ring-primary-500',
+      outlined: 'border-2 border-gray-300 dark:border-gray-600 bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-primary-500 focus:ring-0'
     }
     
     const sizeClasses = {
@@ -58,7 +58,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       leftIcon && 'pl-10',
       (rightIcon || showPasswordToggle) && 'pr-10',
       error && 'border-error-500 focus:border-error-500 focus:ring-error-500',
-      disabled && 'bg-gray-50 text-gray-500 cursor-not-allowed',
+      disabled && 'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 cursor-not-allowed',
       className
     )
 
@@ -73,7 +73,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className={fullWidth ? 'w-full' : ''}>
         {label && (
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             {label}
           </label>
         )}
@@ -81,7 +81,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <div className="relative">
           {leftIcon && (
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <div className="text-gray-400 h-4 w-4">
+              <div className="text-gray-400 dark:text-gray-500 h-4 w-4">
                 {leftIcon}
               </div>
             </div>
@@ -103,7 +103,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 <button
                   type="button"
                   onClick={togglePassword}
-                  className="text-gray-400 hover:text-gray-600 focus:outline-none"
+                  className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none"
                   tabIndex={-1}
                 >
                   {showPassword ? (
@@ -113,7 +113,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                   )}
                 </button>
               ) : (
-                <div className="text-gray-400 h-4 w-4">
+                <div className="text-gray-400 dark:text-gray-500 h-4 w-4">
                   {rightIcon}
                 </div>
               )}
@@ -122,13 +122,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         </div>
         
         {error && (
-          <p className="mt-1 text-sm text-error-600">
+          <p className="mt-1 text-sm text-error-600 dark:text-error-400">
             {error}
           </p>
         )}
         
         {helperText && !error && (
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             {helperText}
           </p>
         )}
