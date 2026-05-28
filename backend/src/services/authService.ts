@@ -98,9 +98,13 @@ export class AuthService {
 
       return { success: true, message: 'Login successful', user: userWithoutPassword, token };
     } catch (error) {
-      // DB query failed — fall back to mock users so dev can still log in
-      console.warn('[AuthService] DB query failed, falling back to mock auth:', error);
-      return mockLogin(credentials);
+      console.error('[AuthService] DB query failed:', error);
+      // Only fall back to mock auth in development
+      if (process.env['NODE_ENV'] !== 'production') {
+        console.warn('[AuthService] Falling back to mock auth (dev only)');
+        return mockLogin(credentials);
+      }
+      return { success: false, message: 'Invalid email or password' };
     }
   }
 

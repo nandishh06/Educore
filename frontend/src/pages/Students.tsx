@@ -33,6 +33,7 @@ const Students = () => {
   })
   const [total, setTotal] = useState(0)
   const [totalPages, setTotalPages] = useState(0)
+  const [showAddModal, setShowAddModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [editingStudent, setEditingStudent] = useState<Student | null>(null)
@@ -603,6 +604,48 @@ const Students = () => {
           )}
         </CardBody>
       </Card>
+
+      {/* Add Student Modal */}
+      {showAddModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Add New Student</h2>
+              <button
+                onClick={() => setShowAddModal(false)}
+                className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+              >
+                ×
+              </button>
+            </div>
+            <form onSubmit={(e) => { handleSubmit(e); setShowAddModal(false) }} className="space-y-4">
+              <div className="border-b dark:border-gray-700 pb-4">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-3">Personal Information</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <Input label="First Name" value={formData.firstName} onChange={(e) => handleInputChange('firstName', e.target.value)} required />
+                  <Input label="Last Name" value={formData.lastName} onChange={(e) => handleInputChange('lastName', e.target.value)} required />
+                  <Input label="Email" type="email" value={formData.email} onChange={(e) => handleInputChange('email', e.target.value)} required />
+                  <Input label="Phone" value={formData.phone} onChange={(e) => handleInputChange('phone', e.target.value)} />
+                  <Input label="Date of Birth" type="date" value={formData.dateOfBirth} onChange={(e) => handleInputChange('dateOfBirth', e.target.value)} required />
+                </div>
+              </div>
+              <div className="border-b dark:border-gray-700 pb-4">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-3">Academic Information</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <Input label="Roll Number" value={formData.academicInfo.rollNumber} onChange={(e) => handleInputChange('academicInfo.rollNumber', e.target.value)} required />
+                  <Input label="Grade" value={formData.academicInfo.grade} onChange={(e) => handleInputChange('academicInfo.grade', e.target.value)} required />
+                  <Input label="Section" value={formData.academicInfo.section} onChange={(e) => handleInputChange('academicInfo.section', e.target.value)} required />
+                  <Input label="Admission Date" type="date" value={formData.academicInfo.admissionDate} onChange={(e) => handleInputChange('academicInfo.admissionDate', e.target.value)} required />
+                </div>
+              </div>
+              <div className="flex justify-end space-x-3 pt-4">
+                <Button type="button" variant="secondary" onClick={() => setShowAddModal(false)} disabled={isSubmitting}>Cancel</Button>
+                <Button type="submit" variant="primary" disabled={isSubmitting}>{isSubmitting ? 'Adding...' : 'Add Student'}</Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Edit Student Modal */}
       {showEditModal && (
